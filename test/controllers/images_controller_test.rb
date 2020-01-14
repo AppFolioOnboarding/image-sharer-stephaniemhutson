@@ -21,4 +21,25 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_includes response.body, 'http://image.com'
     assert_includes response.body, 'http://image2.com'
   end
+
+  test 'index includes a list of images with tags' do
+    post '/images', params: { image: { image_url: 'http://image.com', tag_list: 'unique_tag' } }
+    get '/images'
+
+    assert_response :success
+    assert_includes response.body, 'http://image.com'
+    # TODO: (stephanie hutson) It might be a good idea to test for not just the presense of
+    # the tag in the response body, but to test for a specific element. As it is, there is
+    # very little structure to the index page beyond a list of pictures and tags, and I think
+    # this is sufficient
+    assert_includes response.body, 'unique_tag'
+  end
+
+  test 'show displays tags' do
+    post '/images', params: { image: { image_url: 'http://image.com', tag_list: 'unique_tag' } }
+    follow_redirect!
+
+    assert_response :success
+    assert_includes response.body, 'unique_tag'
+  end
 end

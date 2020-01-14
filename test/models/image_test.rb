@@ -1,9 +1,10 @@
 require 'test_helper'
 
+VALID_URL = 'http://www.image.com'.freeze
+
 class ImageTest < ActiveSupport::TestCase
   test 'image is valid' do
-    @image = Image.new(image_url: 'http://www.image.com')
-    @image.valid?
+    @image = Image.new(image_url: VALID_URL)
     assert_predicate @image, :valid?
   end
 
@@ -17,5 +18,10 @@ class ImageTest < ActiveSupport::TestCase
     @image = Image.new(image_url: 'www.badurl.com')
     refute_predicate @image, :valid?
     assert_includes(@image.errors.details[:image_url], error: :invalid, value: 'www.badurl.com')
+  end
+
+  test 'image can have tags added' do
+    @image = Image.new(image_url: VALID_URL, tag_list: 'tag1')
+    assert_predicate @image, :valid?
   end
 end
