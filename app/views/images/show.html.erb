@@ -5,5 +5,5 @@
     <%= link_to tag.name, images_path(tag_filter: tag.name ) %>
   <% end %>
 </p>
-<br>
+<%= button_to "Delete this image", image_path(@image), method: :delete, action: "delete" %>
 <%= link_to "Back to home", images_path %>

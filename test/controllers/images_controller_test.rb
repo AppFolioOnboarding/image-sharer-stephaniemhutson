@@ -54,4 +54,23 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_includes response.body, 'http://image.com'
     refute_includes response.body, 'http://image2.com'
   end
+
+  test 'able to delete image' do
+    post '/images', params: { image: { image_url: 'http://image.com' } }
+    @image = Image.last
+    assert_difference 'Image.count', -1 do
+      delete "/images/#{@image.id}"
+    end
+    assert_response :redirect
+  end
+
+  test 'no error raised if trying to delete already deleted image' do
+    post '/images', params: { image: { image_url: 'http://image.com' } }
+    @image = Image.last
+    delete "/images/#{@image.id}"
+    # asserts that although the image has been deleted, no error is raised
+    # if someone tries to delete the image again.
+    delete "/images/#{@image.id}"
+    assert_response :redirect
+  end
 end
