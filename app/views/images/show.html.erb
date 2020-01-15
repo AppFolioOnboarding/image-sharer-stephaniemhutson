@@ -5,5 +5,10 @@
     <%= link_to tag.name, images_path(tag_filter: tag.name ) %>
   <% end %>
 </p>
-<%= button_to "Delete this image", image_path(@image), method: :delete, action: "delete" %>
+<%= button_to "Delete this image",
+  image_path(@image),
+  method: :delete,
+  action: "delete",
+  data: {confirm: "Are you sure you want to delete this image?"}
+%>
 <%= link_to "Back to home", images_path %>
