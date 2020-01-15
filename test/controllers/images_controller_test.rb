@@ -42,4 +42,16 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_includes response.body, 'unique_tag'
   end
+
+  test 'index allows querying by tag' do
+    post '/images', params: { image: { image_url: 'http://image.com', tag_list: 'unique_tag' } }
+    post '/images', params: { image: { image_url: 'http://image2.com' } }
+
+    get '/images?tag_filter=unique_tag'
+    assert_response :success
+
+    # asserts the image with the tag is shown, and without it not
+    assert_includes response.body, 'http://image.com'
+    refute_includes response.body, 'http://image2.com'
+  end
 end

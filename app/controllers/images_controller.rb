@@ -1,6 +1,10 @@
 class ImagesController < ApplicationController
   def index
-    @images = Image.order(id: :desc)
+    @images = if search_params[:tag_filter].present?
+                Image.tagged_with(search_params[:tag_filter]).order(id: :desc)
+              else
+                Image.order(id: :desc)
+              end
   end
 
   def new
@@ -22,5 +26,9 @@ class ImagesController < ApplicationController
 
   def image_params
     params.require(:image).permit(:image_url, :tag_list)
+  end
+
+  def search_params
+    params.permit(:tag_filter) || nil
   end
 end
