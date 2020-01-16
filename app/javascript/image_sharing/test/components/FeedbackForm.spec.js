@@ -16,10 +16,14 @@ describe('<FeedbackForm/>', () => {
   })
 
   it('should submit', () => {
+    // mock out ajax request
+    global.$ = {}
+    $.post = sinon.spy()
     const appSubmit = sinon.spy();
     const wrapper = mount(<FeedbackForm onSubmit={appSubmit}/>)
 
     wrapper.find("form").simulate('submit')
     assert(appSubmit.calledOnce)
+    assert($.post.calledOnce)
   })
 })
