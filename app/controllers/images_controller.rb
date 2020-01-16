@@ -24,6 +24,12 @@ class ImagesController < ApplicationController
     @image = Image.find(params[:id])
   end
 
+  def destroy
+    @image = Image.find_by(id: params[:id])
+    @image.nil? || @image.destroy
+    redirect_to images_path
+  end
+
   def image_params
     params.require(:image).permit(:image_url, :tag_list)
   end
