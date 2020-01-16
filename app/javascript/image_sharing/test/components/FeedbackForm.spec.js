@@ -16,9 +16,10 @@ describe('<FeedbackForm/>', () => {
   })
 
   it('should submit', () => {
-    const spy = sinon.spy();
-    const wrapper = mount(<FeedbackForm onSubmit={spy}/>)
+    const appSubmit = sinon.spy();
+    const wrapper = mount(<FeedbackForm onSubmit={appSubmit}/>)
+
     wrapper.find("form").simulate('submit')
-    assert(spy.calledOnce)
+    assert(appSubmit.calledOnce)
   })
 })
