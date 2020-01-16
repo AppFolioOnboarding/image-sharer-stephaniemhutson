@@ -1,7 +1,9 @@
 <p>Your image:</p>
 <%= image_tag src=@image.image_url %>
 <p>Tags:
-  <%= @image.tag_list %>
+  <% for tag in @image.tags %>
+    <%= link_to tag.name, images_path(tag_filter: tag.name ) %>
+  <% end %>
 </p>
 <br>
-<%= link_to "Back", images_path %>
+<%= link_to "Back to home", images_path %>

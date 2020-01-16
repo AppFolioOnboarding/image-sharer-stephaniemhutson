@@ -5,10 +5,13 @@
     <% @images.each do |image| %>
       <li>
         <%= link_to (image_tag image.image_url), image_path(image) %>
-        <%= image.tag_list %>
+        <% for tag in image.tags %>
+          <%= link_to tag.name, images_path(tag: tag.name ) %>
+        <% end %>
       </li>
     <% end %>
   </ul>
 <% end %>
 
 <p>Link to image submission form <%= link_to "here", new_image_path %>
+<p><%= link_to 'remove_tags', images_path %></p>
