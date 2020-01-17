@@ -7,13 +7,30 @@ class FeedbackForm extends React.Component {
     this.state = {
       name: '',
       comments: '',
+      error: false,
     }
+
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
 
-  handleSubmit() {
+  handleSubmit(e) {
+    e.preventDefault()
+    $.post({url: '/api/feedbacks', data: {feedback: {
+        name: this.state.name,
+        comments: this.state.comments,
+      }},
+      success: () => {
+        this.setState({
+          name: '',
+          comments: '',
+          error: false,
+        })
+        alert("Success!")
+      },
+      error: (data) => {this.setState({error:true})}
+    })
     this.props.onSubmit(this.state)
   }
 
@@ -23,6 +40,7 @@ class FeedbackForm extends React.Component {
 
   render() {
     return <form onSubmit={this.handleSubmit}>
+      <div>{this.state.error && "Unable to Submit"}</div>
       <div>
         <label>Your name:</label>
         <input type='text' name='name' onChange={this.handleChange} value={this.state.name}/>
